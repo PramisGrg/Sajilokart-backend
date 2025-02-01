@@ -1,15 +1,16 @@
 import express from "express";
 import { config } from "dotenv";
+import { NotFoundController } from "./utils/notFound.utils";
 config();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("*", NotFoundController);
 
-const uri = process.env.DATABASE_URI;
-console.log(uri);
+const PORT = process.env.PORT;
 
-app.listen(3000, () => {
-  console.log("Server running in port", 3000);
+app.listen(PORT, () => {
+  console.log(`Server running in port, ${PORT}`);
 });
