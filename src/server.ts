@@ -1,12 +1,14 @@
-import express from "express";
 import { config } from "dotenv";
-import { NotFoundController } from "./utils/notFound.utils";
 config();
+import express from "express";
+import { NotFoundController } from "./utils/notFound.utils";
+import mainRouter from "./routes/main.routes";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(mainRouter);
 app.use("*", NotFoundController);
 
 const PORT = process.env.PORT;
