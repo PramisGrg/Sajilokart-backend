@@ -14,7 +14,6 @@ export function uploadToProvider() {
   ): Promise<void> => {
     try {
       if (!req.file?.buffer) {
-        console.log("There is no file");
         return next();
       }
 
@@ -34,7 +33,6 @@ export function uploadToProvider() {
         stream.end(file.buffer);
       });
 
-      console.log(imageUrl, "This is image URi");
       req.imageUrl = imageUrl;
       next();
     } catch (error) {

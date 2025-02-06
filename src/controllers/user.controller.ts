@@ -1,6 +1,25 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { createUserService } from "../services/user.service";
+import { TRegisterUserSchema } from "../schemas/auth.schema";
 
-export const createUser = (req: Request, res: Response) => {
-  console.log(req.body, "This is request body");
-  console.log("This is create User");
+interface TCreateUserRequest {
+  body: TRegisterUserSchema;
+  imageUrl?: string;
+}
+export const createUser = async (
+  req: TCreateUserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log(req.body);
+
+  try {
+    const response = await createUserService(req.body, req.imageUrl);
+
+    res
+      .status(201)
+      .json({ message: "User Successfully Created", data: response });
+  } catch (error) {
+    return next(error);
+  }
 };
