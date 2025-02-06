@@ -1,5 +1,6 @@
 import prisma from "../configs/db.config";
-import { TRegisterUserSchema } from "../schemas/auth.schema";
+import { loginUser } from "../controllers/auth.controller";
+import { TLoginUserSchema, TRegisterUserSchema } from "../schemas/auth.schema";
 import bcrypt from "bcrypt";
 
 export const createUserService = async (
@@ -34,5 +35,15 @@ export const createUserService = async (
 
   if (!createUser && !createRole) throw new Error("Failed to create user");
 
-  return { ...createUser, createRole };
+  return { user: createUser, role: createRole };
+};
+
+export const loginUserService = async (data: TLoginUserSchema) => {
+  try {
+    console.log(data, "This is data");
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { createUser } from "../controllers/auth.controller";
+import { createUser, loginUser } from "../controllers/auth.controller";
 import { uploadToProvider } from "../middlewares/asset.middleware";
 import upload from "../configs/multer.config";
 import { validateBody } from "../middlewares/validateBody.middleware";
-import { registerUserSchema } from "../schemas/auth.schema";
+import { loginUserSchema, registerUserSchema } from "../schemas/auth.schema";
 
 const userRouter = Router({ mergeParams: true });
 
@@ -14,5 +14,7 @@ userRouter.post(
   validateBody(registerUserSchema),
   createUser
 );
+
+userRouter.post("/login", loginUser);
 
 export default userRouter;

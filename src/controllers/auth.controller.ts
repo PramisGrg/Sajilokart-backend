@@ -1,10 +1,14 @@
-import { NextFunction, Response } from "express";
-import { createUserService } from "../services/auth.service";
-import { TRegisterUserSchema } from "../schemas/auth.schema";
+import { NextFunction, response, Response } from "express";
+import { createUserService, loginUserService } from "../services/auth.service";
+import { TLoginUserSchema, TRegisterUserSchema } from "../schemas/auth.schema";
 
 interface TCreateUserRequest {
   body: TRegisterUserSchema;
   imageUrl?: string;
+}
+
+interface TLoginUserRequest {
+  body: TLoginUserSchema;
 }
 
 export const createUser = async (
@@ -12,8 +16,6 @@ export const createUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body);
-
   try {
     const response = await createUserService(req.body, req.imageUrl);
 
@@ -22,5 +24,20 @@ export const createUser = async (
       .json({ message: "User Successfully Created", data: response });
   } catch (error) {
     return next(error);
+  }
+};
+
+export const loginUser = async (
+  req: TLoginUserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await loginUserService(req.body);
+    res
+      .status(201)
+      .json({ message: "User logged in successful", data: response });
+  } catch (error) {
+    next(error);
   }
 };
