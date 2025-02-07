@@ -1,4 +1,4 @@
-import { NextFunction, response, Response } from "express";
+import { NextFunction, Response } from "express";
 import { createUserService, loginUserService } from "../services/auth.service";
 import { TLoginUserSchema, TRegisterUserSchema } from "../schemas/auth.schema";
 
@@ -11,7 +11,8 @@ interface TLoginUserRequest {
   body: TLoginUserSchema;
 }
 
-export const createUser = async (
+//Create user registration
+export const createUserController = async (
   req: TCreateUserRequest,
   res: Response,
   next: NextFunction
@@ -27,7 +28,8 @@ export const createUser = async (
   }
 };
 
-export const loginUser = async (
+//login user controller
+export const loginUserController = async (
   req: TLoginUserRequest,
   res: Response,
   next: NextFunction
@@ -38,6 +40,7 @@ export const loginUser = async (
       .status(201)
       .json({ message: "User logged in successful", data: response });
   } catch (error) {
-    next(error);
+    console.log("This is error form login in controller");
+    return next(error);
   }
 };

@@ -1,8 +1,10 @@
 import prisma from "../configs/db.config";
-import { loginUser } from "../controllers/auth.controller";
+import jwt from "jsonwebtoken";
 import { TLoginUserSchema, TRegisterUserSchema } from "../schemas/auth.schema";
 import bcrypt from "bcrypt";
+import KnownError from "../utils/knownError.utlis";
 
+//Register Service
 export const createUserService = async (
   data: TRegisterUserSchema,
   imageUrl: string | undefined
@@ -13,7 +15,7 @@ export const createUserService = async (
     },
   });
 
-  if (existingUser) throw new Error("User already exists");
+  if (existingUser) throw new KnownError("User already exists");
 
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
@@ -33,17 +35,31 @@ export const createUserService = async (
     },
   });
 
-  if (!createUser && !createRole) throw new Error("Failed to create user");
+  if (!createUser && !createRole) throw new KnownError("Failed to create user");
 
   return { user: createUser, role: createRole };
 };
 
+//Login Service
 export const loginUserService = async (data: TLoginUserSchema) => {
-  try {
-    console.log(data, "This is data");
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      email: data.email,
+    },
+  });
 
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  if (!existingUser)
+    throw new KnownError("User with such details not found, register first");
+
+  const isPasswordValid = await bcrypt.compare(
+    data.password,
+    existingUser.password
+  );
+
+  if (!isPasswordValid)
+    throw new KnownError("Wrong Password, please try again");
+
+  const token = jwt.sign(existingUser, "15d");
+
+  return { token, user: existingUser };
 };

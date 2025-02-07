@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
+import KnownError from "../utils/knownError.utlis";
 
 export const genericErrorHandler = async (
   error: unknown,
@@ -18,8 +19,9 @@ export const genericErrorHandler = async (
     });
   }
 
-  return res.status(400).json({
-    message:
-      error instanceof Error ? error.message : "An unknown error occurred",
-  });
+  if (error instanceof KnownError) {
+    return res.status(error.status).json({ message: error.message });
+  }
+
+  return res.status(500).json({ message: "Something went wrong!" });
 };

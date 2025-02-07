@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { createUser, loginUser } from "../controllers/auth.controller";
+import {
+  createUserController,
+  loginUserController,
+} from "../controllers/auth.controller";
 import { uploadToProvider } from "../middlewares/asset.middleware";
 import upload from "../configs/multer.config";
 import { validateBody } from "../middlewares/validateBody.middleware";
@@ -12,9 +15,9 @@ userRouter.post(
   upload.single("image"),
   uploadToProvider(),
   validateBody(registerUserSchema),
-  createUser
+  createUserController
 );
 
-userRouter.post("/login", loginUser);
+userRouter.post("/login", validateBody(loginUserSchema), loginUserController);
 
 export default userRouter;
