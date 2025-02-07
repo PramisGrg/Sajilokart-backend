@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
-import KnownError from "../utils/knownError.utlis";
+import KnownError from "../utils/knownError.utils";
 
 export const genericErrorHandler = async (
   error: unknown,

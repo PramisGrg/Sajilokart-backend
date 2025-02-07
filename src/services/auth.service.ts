@@ -2,7 +2,7 @@ import prisma from "../configs/db.config";
 import jwt from "jsonwebtoken";
 import { TLoginUserSchema, TRegisterUserSchema } from "../schemas/auth.schema";
 import bcrypt from "bcrypt";
-import KnownError from "../utils/knownError.utlis";
+import KnownError from "../utils/knownError.utils";
 
 //Register Service
 export const createUserService = async (
