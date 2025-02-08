@@ -1,8 +1,9 @@
-import prisma from "../configs/db.config";
 import jwt from "jsonwebtoken";
+import prisma from "../configs/db.config";
 import { TLoginUserSchema, TRegisterUserSchema } from "../schemas/auth.schema";
 import bcrypt from "bcrypt";
 import KnownError from "../utils/knownError.utils";
+import { generateToken } from "../utils/generateToken.utils";
 
 //Register Service
 export const createUserService = async (
@@ -22,22 +23,16 @@ export const createUserService = async (
   const createUser = await prisma.user.create({
     data: {
       name: data.name,
+      phoneNumber: data.phoneNumber,
       email: data.email,
       password: hashedPassword,
-      phoneNumber: data.phoneNumber,
-      image: imageUrl ? imageUrl : " ",
-    },
-  });
-
-  const createRole = await prisma.role.create({
-    data: {
       role: data.role,
     },
   });
 
-  if (!createUser && !createRole) throw new KnownError("Failed to create user");
+  if (!createUser) throw new Error("Error while creating user");
 
-  return { user: createUser, role: createRole };
+  return { ...createUser, image: imageUrl };
 };
 
 //Login Service
@@ -59,7 +54,7 @@ export const loginUserService = async (data: TLoginUserSchema) => {
   if (!isPasswordValid)
     throw new KnownError("Wrong Password, please try again");
 
-  const token = jwt.sign(existingUser, "15d");
+  const token = generateToken(existingUser);
 
   return { token, user: existingUser };
 };

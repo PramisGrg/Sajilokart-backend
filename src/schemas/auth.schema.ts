@@ -10,7 +10,9 @@ export const registerUserSchema = z.object({
   email: z.string().email({ message: "email is required" }),
   phoneNumber: z.string().min(4, "enter a valid number"),
   password: z.string().min(3, "enter a valid password"),
-  role: z.string({ message: "role is required" }),
+  role: z.enum(["BUYER", "SELLER"], {
+    message: "role must be BUYER and SELLER",
+  }),
 });
 
 export type TLoginUserSchema = z.infer<typeof loginUserSchema>;
