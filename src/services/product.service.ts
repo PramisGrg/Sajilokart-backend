@@ -1,5 +1,4 @@
 import prisma from "../configs/db.config";
-import { TCreateProductRequest } from "../controllers/product.controller";
 import { TProductSchema } from "../schemas/product.schema";
 import KnownError from "../utils/knownError.utils";
 
@@ -22,4 +21,16 @@ export const createProductService = async (
   if (!createProduct) throw new KnownError("Failed to create new product");
 
   return createProduct;
+};
+
+export const getAllProductsService = (sellerId: string) => {
+  const allProducts = prisma.product.findMany({
+    where: {
+      sellerId,
+    },
+  });
+
+  if (!allProducts) throw new KnownError("Error while fetching products");
+
+  return allProducts;
 };

@@ -6,6 +6,6 @@ import { validateToken } from "../middlewares/auth.middleware";
 const mainRouter = Router({ mergeParams: true });
 
 mainRouter.use("/auth", userRouter);
-mainRouter.use("/product", validateToken, productRouter);
+mainRouter.use("/product", productRouter);
 
 export default mainRouter;
