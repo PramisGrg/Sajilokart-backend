@@ -1,10 +1,17 @@
 import { Router } from "express";
-import { validateToken } from "../middlewares/auth.middleware";
-import { createProduct } from "../controllers/product.controller";
-import { isBuyer, isSeller } from "../middlewares/role.middleware";
+import { createProductController } from "../controllers/product.controller";
+import { isSeller } from "../middlewares/role.middleware";
+import upload from "../configs/multer.config";
+import { uploadToProvider } from "../middlewares/asset.middleware";
 
 const productRouter = Router({ mergeParams: true });
 
-productRouter.post("/create", isSeller, createProduct);
+productRouter.post(
+  "/create",
+  isSeller,
+  upload.single("image"),
+  uploadToProvider(),
+  createProductController
+);
 
 export default productRouter;

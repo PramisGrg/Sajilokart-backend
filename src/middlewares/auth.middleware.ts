@@ -40,8 +40,6 @@ export const validateToken = async (
       process.env.JWT_SECRET ?? "jwtSecret"
     ) as JWTPayload;
 
-    console.log(userData, "This is user data");
-
     req.currentUser = userData;
 
     return next();
