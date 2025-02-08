@@ -6,6 +6,7 @@ import { TRegisterUserSchema } from "../schemas/auth.schema";
 import KnownError from "../utils/knownError.utils";
 
 interface JWTPayload extends TRegisterUserSchema {
+  id: string;
   image: string;
 }
 declare global {
@@ -16,7 +17,7 @@ declare global {
   }
 }
 
-export const validateToken = (
+export const validateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -36,8 +37,10 @@ export const validateToken = (
 
     const userData = jwt.verify(
       tokenValue,
-      process.env.JWT_SECRET ?? ""
+      process.env.JWT_SECRET ?? "jwtSecret"
     ) as JWTPayload;
+
+    console.log(userData, "This is user data");
 
     req.currentUser = userData;
 
