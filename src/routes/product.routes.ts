@@ -12,6 +12,8 @@ const productRouter = Router({ mergeParams: true });
 
 productRouter.get("/", getAllProductsController);
 
+productRouter.get("/seller-product");
+
 productRouter.post(
   "/create",
   validateToken,

@@ -3,7 +3,9 @@ import { TProductSchema } from "../schemas/product.schema";
 import {
   createProductService,
   getAllProductsService,
+  getSellerProductService,
 } from "../services/product.service";
+import { date } from "zod";
 
 export interface TCreateProductRequest extends Request {
   body: TProductSchema;
@@ -37,10 +39,29 @@ export const getAllProductsController = async (
   next: NextFunction
 ): Promise<any> => {
   try {
-    const response = await getAllProductsService(req.currentUser.id);
+    const response = await getAllProductsService();
     return res
       .status(201)
-      .json({ message: "All products fetched", data: response });
+      .json({ message: "All products fetched successfully", data: response });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getSellerProductsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await getSellerProductService(req.currentUser.id);
+
+    res
+      .status(201)
+      .json({
+        message: "Seller products fetched successfully",
+        data: response,
+      });
   } catch (error) {
     return next(error);
   }
