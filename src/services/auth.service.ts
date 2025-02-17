@@ -25,6 +25,7 @@ export const createUserService = async (
       name: data.name,
       phoneNumber: data.phoneNumber,
       email: data.email,
+      image: imageUrl,
       password: hashedPassword,
       role: data.role,
     },
@@ -56,5 +57,5 @@ export const loginUserService = async (data: TLoginUserSchema) => {
 
   const token = generateToken(existingUser);
 
-  return { token, user: existingUser };
+  return { token, ...existingUser };
 };

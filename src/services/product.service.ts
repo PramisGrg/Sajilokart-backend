@@ -23,18 +23,6 @@ export const createProductService = async (
   return createProduct;
 };
 
-// export const getAllProductsService = (sellerId: string) => {
-//   const allProducts = prisma.product.findMany({
-//     where: {
-//       sellerId,
-//     },
-//   });
-
-//   if (!allProducts) throw new KnownError("Error while fetching products");
-
-//   return allProducts;
-// };
-
 export const getAllProductsService = () => {
   const allProducts = prisma.product.findMany();
 
@@ -51,7 +39,7 @@ export const getSellerProductService = (sellerId: string) => {
   });
 
   if (!buyerProducts)
-    throw new KnownError("Error while fetching seller products");
+    throw new KnownError("Requested seller products not found");
 
   return buyerProducts;
 };

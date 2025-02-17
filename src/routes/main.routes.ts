@@ -1,11 +1,12 @@
 import { Router } from "express";
-import userRouter from "./auth.routes";
 import productRouter from "./product.routes";
-import { validateToken } from "../middlewares/auth.middleware";
+import authRouter from "./auth.routes";
+import userRouter from "./user.routes";
 
 const mainRouter = Router({ mergeParams: true });
 
-mainRouter.use("/auth", userRouter);
+mainRouter.use("/auth", authRouter);
 mainRouter.use("/product", productRouter);
+mainRouter.use("/user", userRouter);
 
 export default mainRouter;

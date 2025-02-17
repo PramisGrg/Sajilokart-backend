@@ -8,7 +8,6 @@ export const genericErrorHandler = async (
   res: Response,
   _next: NextFunction
 ): Promise<any> => {
-  console.log(error);
   if (error instanceof ZodError) {
     return res.status(400).json({
       message: "Validation failed",

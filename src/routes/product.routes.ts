@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createProductController,
   getAllProductsController,
+  getSellerProductsController,
 } from "../controllers/product.controller";
 import { isSeller } from "../middlewares/role.middleware";
 import upload from "../configs/multer.config";
@@ -12,7 +13,7 @@ const productRouter = Router({ mergeParams: true });
 
 productRouter.get("/", getAllProductsController);
 
-productRouter.get("/seller-product");
+productRouter.get("/seller-product", getSellerProductsController);
 
 productRouter.post(
   "/create",

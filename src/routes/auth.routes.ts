@@ -8,9 +8,9 @@ import upload from "../configs/multer.config";
 import { validateBody } from "../middlewares/validateBody.middleware";
 import { loginUserSchema, registerUserSchema } from "../schemas/auth.schema";
 
-const userRouter = Router({ mergeParams: true });
+const authRouter = Router({ mergeParams: true });
 
-userRouter.post(
+authRouter.post(
   "/register",
   upload.single("image"),
   uploadToProvider(),
@@ -18,6 +18,6 @@ userRouter.post(
   createUserController
 );
 
-userRouter.post("/login", validateBody(loginUserSchema), loginUserController);
+authRouter.post("/login", validateBody(loginUserSchema), loginUserController);
 
-export default userRouter;
+export default authRouter;
