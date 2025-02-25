@@ -7,7 +7,11 @@ export const getUserService = (userId: string) => {
     },
   });
 
-  if (!user) throw new Error("Requested user not found");
+  if (!user) throw new Error("Requested user not found on the database");
 
   return user;
 };
+
+// export const updateUserService = (data) => {
+//   console.log(data, "This is data");
+// };

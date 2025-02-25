@@ -20,3 +20,23 @@ export const getUserController = async (
     return next(error);
   }
 };
+
+export const updateUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    if (!req.currentUser.id)
+      throw new KnownError("Please login to perform this action");
+
+    console.log(req.body, "This is request body");
+    // const response = await updateUserService(req.body);
+
+    // return res
+    //   .status(201)
+    //   .json({ message: "User successfully updated", data: response });
+  } catch (error) {
+    return next(error);
+  }
+};

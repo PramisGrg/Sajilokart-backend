@@ -12,9 +12,9 @@ const authRouter = Router({ mergeParams: true });
 
 authRouter.post(
   "/register",
+  validateBody(registerUserSchema),
   upload.single("image"),
   uploadToProvider(),
-  validateBody(registerUserSchema),
   createUserController
 );
 
