@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { getUserService } from "../services/user.service";
+import { getUserService, updateUserService } from "../services/user.service";
 import KnownError from "../utils/knownError.utils";
+
+interface TUserUpdateRequest extends Request {
+  imageUrl?: string;
+}
 
 export const getUserController = async (
   req: Request,
@@ -22,7 +26,7 @@ export const getUserController = async (
 };
 
 export const updateUserController = async (
-  req: Request,
+  req: TUserUpdateRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
@@ -30,12 +34,15 @@ export const updateUserController = async (
     if (!req.currentUser.id)
       throw new KnownError("Please login to perform this action");
 
-    console.log(req.body, "This is request body");
-    // const response = await updateUserService(req.body);
+    const response = await updateUserService(
+      req.body,
+      req.currentUser.id,
+      req.imageUrl
+    );
 
-    // return res
-    //   .status(201)
-    //   .json({ message: "User successfully updated", data: response });
+    return res
+      .status(201)
+      .json({ message: "User successfully updated", data: response });
   } catch (error) {
     return next(error);
   }
