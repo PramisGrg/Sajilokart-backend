@@ -34,6 +34,7 @@ export function uploadToProvider() {
       });
 
       req.imageUrl = imageUrl;
+
       next();
     } catch (error) {
       next(error);

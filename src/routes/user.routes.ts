@@ -14,10 +14,10 @@ const userRouter = Router({ mergeParams: true });
 userRouter.get("/", validateToken, getUserController);
 userRouter.post(
   "/update",
-  validateBody(updateUserSchema),
   validateToken,
   upload.single("image"),
   uploadToProvider(),
+  validateBody(updateUserSchema),
   updateUserController
 );
 
