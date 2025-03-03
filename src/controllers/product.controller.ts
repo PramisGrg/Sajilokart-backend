@@ -3,6 +3,7 @@ import { TProductSchema } from "../schemas/product.schema";
 import {
   createProductService,
   getAllProductsService,
+  getProductByIdService,
   getSellerProductService,
 } from "../services/product.service";
 import { date } from "zod";
@@ -56,12 +57,28 @@ export const getSellerProductsController = async (
   try {
     const response = await getSellerProductService(req.currentUser.id);
 
-    res
-      .status(201)
-      .json({
-        message: "Seller products fetched successfully",
-        data: response,
-      });
+    res.status(201).json({
+      message: "Seller products fetched successfully",
+      data: response,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getProductByIdController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const { productId } = req.params;
+    const response = await getProductByIdService(productId);
+
+    return res.status(201).json({
+      message: "Product details fetched successfully",
+      data: response,
+    });
   } catch (error) {
     return next(error);
   }

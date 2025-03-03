@@ -13,7 +13,12 @@ const productRouter = Router({ mergeParams: true });
 
 productRouter.get("/", getAllProductsController);
 
-productRouter.get("/seller-product", getSellerProductsController);
+productRouter.get(
+  "/seller-product",
+  validateToken,
+  isSeller,
+  getSellerProductsController
+);
 
 productRouter.post(
   "/create",

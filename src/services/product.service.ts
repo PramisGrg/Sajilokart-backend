@@ -32,14 +32,26 @@ export const getAllProductsService = () => {
 };
 
 export const getSellerProductService = (sellerId: string) => {
-  const buyerProducts = prisma.product.findMany({
+  const sellerProducts = prisma.product.findMany({
     where: {
       sellerId,
     },
   });
 
-  if (!buyerProducts)
+  if (!sellerProducts)
     throw new KnownError("Requested seller products not found");
 
-  return buyerProducts;
+  return sellerProducts;
+};
+
+export const getProductByIdService = (productId: string) => {
+  const productById = prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!productById) throw new KnownError("Requested product not found");
+
+  return productById;
 };
